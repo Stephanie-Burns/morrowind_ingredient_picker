@@ -1,25 +1,7 @@
 {% for effect in effects %}
-    <tr>
-        <td>
-            <a href="javascript:void(0);"
-               hx-get="{% url 'ingredients_for_effect_modal' effect.id %}"
-               hx-target="#modal"
-               hx-swap="innerHTML"
-               hx-trigger="click"
-            >
-                {{ effect.name }}
-            </a>
-        </td>
-        <td>
-            {% for ingredienteffect in effect.ingredienteffects.all %}
-                {{ ingredienteffect.ingredient.name }}{% if not forloop.last %}, {% endif %}
-            {% empty %}
-                <em>No ingredients found</em>
-            {% endfor %}
-        </td>
-    </tr>
+    {% include 'alchemy/partials/effects_table_row.html' with effect=effect %}
 {% empty %}
     <tr>
-        <td colspan="2"><em>No results found.</em></td>
+        <td colspan="3"><em>No results found.</em></td>
     </tr>
 {% endfor %}

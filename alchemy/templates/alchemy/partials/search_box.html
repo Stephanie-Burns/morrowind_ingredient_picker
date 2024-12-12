@@ -1,0 +1,15 @@
+<div class="input-group mb-3">
+    <span class="input-group-text bg-light">
+        <i class="fas fa-search"></i>
+    </span>
+    <input
+        type="text"
+        id="search-input"
+        name="search"
+        placeholder="Search effects or ingredients..."
+        hx-get="{% url 'search_effects' %}"
+        hx-trigger="keyup changed delay:300ms"
+        hx-target="#effects-table-body"
+        class="form-control"
+    />
+</div>

@@ -58,7 +58,6 @@ def favorite_ingredients(request):
 # === Effect Views ===
 
 def all_effects(request):
-    """Display all effects with associated ingredients."""
     effects = Effect.objects.prefetch_related(
         Prefetch(
             'ingredienteffects',
@@ -69,7 +68,9 @@ def all_effects(request):
         )
     )
     if request.htmx:
-        return render(request, 'alchemy/partials/effect_row.html', {'effects': effects})
+        # Render only the table body for HTMX requests
+        return render(request, 'alchemy/partials/effects_table_body.html', {'effects': effects})
+    # Render the full page for standard requests
     return render(request, 'alchemy/all_effects.html', {'effects': effects})
 
 
@@ -100,11 +101,20 @@ def ingredients_for_effect_modal(request, effect_id):
 
 
 def search_effects(request):
-    """Search effects or ingredients by name."""
     query = request.GET.get('search', '').strip().lower()
-    effects = Effect.objects.filter(
+    effects = Effect.objects.prefetch_related(
+        Prefetch(
+            'ingredienteffects',
+            queryset=IngredientEffect.objects.select_related('ingredient').order_by(
+                'ingredient__weight', 'ingredient__value'
+            ),
+            to_attr='sorted_ingredienteffects'
+        )
+    ).filter(
         Q(name__icontains=query) | Q(ingredienteffects__ingredient__name__icontains=query)
     ).distinct()
+
+    # Render the table body for HTMX
     return render(request, 'alchemy/partials/effects_table_body.html', {'effects': effects})
 
 
