@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<h1>Welcome to the Morrowind Alchemy Compendium</h1>
+<p>Explore the alchemy ingredients and effects from Morrowind.</p>
+
+<div>
+    <h2>Navigation</h2>
+    <ul>
+        <li><a href="{% url 'effect_list' %}" class="btn">View All Effects</a></li>
+        <li><a href="{% url 'favorite_ingredients' %}" class="btn btn-secondary">View Favorites</a></li>
+        <li><a href="{% url 'all_ingredients' %}" class="btn">View All Ingredients</a></li>
+    </ul>
+</div>
+{% endblock %}

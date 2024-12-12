@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Review Potion{% endblock %}
+
+{% block content %}
+<h1>Review Your Potion</h1>
+<p>Here are the combined effects of your potion:</p>
+
+<ul>
+    {% for effect in effects %}
+        <li>{{ effect.name }}</li>
+    {% endfor %}
+</ul>
+
+<h2>Ingredients</h2>
+<ul>
+    {% for ingredient in ingredients %}
+        <li>{{ ingredient.name }}</li>
+    {% endfor %}
+</ul>
+
+<form method="post" action="{% url 'save_potion' %}">
+    {% csrf_token %}
+    <input type="hidden" name="ingredients" value="{{ ingredients|join:',' }}">
+    <input type="hidden" name="effects" value="{{ effects|join:',' }}">
+    <label for="name">Potion Name:</label>
+    <input type="text" name="name" id="name" value="Potion of {{ effects|join:' and ' }}">
+    <button type="submit" class="btn">Save Potion</button>
+</form>
+{% endblock %}

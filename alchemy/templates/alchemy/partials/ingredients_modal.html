@@ -1,0 +1,31 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <h3 class="modal-title">{{ effect.name }}</h3>
+        <button type="button" class="close"
+                onclick="document.getElementById('modal-overlay').style.display = 'none'; document.getElementById('modal').classList.remove('show')">
+            &times;
+        </button>
+    </div>
+    <div class="modal-body">
+        {% if ingredient_effects %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Weight</th>
+                        <th>Value</th>
+                        <th>Favorite</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ingredienteffect in ingredient_effects %}
+                        {% include 'alchemy/partials/favorite_row.html' with ingredient=ingredienteffect.ingredient %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No ingredients found for this effect.</p>
+        {% endif %}
+    </div>
+</div>

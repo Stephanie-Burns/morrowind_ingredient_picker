@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Select Effects{% endblock %}
+
+{% block content %}
+<h1>Select Desired Effects</h1>
+<p>Select one or more effects to find matching ingredients.</p>
+
+<form method="post" action="{% url 'select_ingredients' %}">
+    {% csrf_token %}
+    <ul>
+        {% for effect in effects %}
+            <li>
+                <input type="checkbox" name="effects" value="{{ effect.id }}">
+                {{ effect.name }}
+            </li>
+        {% endfor %}
+    </ul>
+    <button type="submit" class="btn btn-primary">Next: Select Ingredients</button>
+</form>
+{% endblock %}

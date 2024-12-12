@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ ingredient.name }}{% endblock %}
+
+{% block content %}
+<h1>{{ ingredient.name }}</h1>
+
+<div>
+    {% if ingredient.image %}
+        <img src="{{ ingredient.image.url }}" alt="{{ ingredient.name }}" width="64" height="64" style="border-radius: 8px;" />
+    {% endif %}
+    <p>Weight: {{ ingredient.weight }}</p>
+    <p>Value: {{ ingredient.value }}</p>
+    {% if ingredient.notes %}
+        <p>Notes: {{ ingredient.notes }}</p>
+    {% endif %}
+</div>
+
+<h2>Effects</h2>
+{% if effects %}
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        {% for effect in effects %}
+            <div class="col text-center">
+                <div class="card h-100">
+                    <div class="card-body">
+                        {% if effect.icon %}
+                            <img src="{{ effect.icon.url }}" alt="{{ effect.name }}" width="50" height="50" style="border-radius: 4px;" />
+                        {% else %}
+                            <img src="{% static 'images/no_image_placeholder.png' %}" alt="No Icon" width="50" height="50" style="border-radius: 4px;" />
+                        {% endif %}
+                        <h5 class="mt-2" style="font-weight: bold; font-size: 1.2rem; color: #007bff;">{{ effect.name }}</h5>
+                        <p>{{ effect.description|default:"No description available" }}</p>
+                    </div>
+
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>This ingredient has no effects.</p>
+{% endif %}
+
+
+<h2>Vendors</h2>
+{% if vendors %}
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Vendor</th>
+                <th>Location</th>
+                <th>Profession</th>
+                <th>Quantity</th>
+                <th>Gold Available</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for vendor_inventory in vendors %}
+                <tr>
+                    <td>
+                        {% if vendor_inventory.vendor.image %}
+                            <img src="{{ vendor_inventory.vendor.image.url }}"
+                                 alt="{{ vendor_inventory.vendor.name }}"
+                                 width="50"
+                                 height="50"
+                                 style="border-radius: 4px;" />
+                        {% else %}
+                            <span>No Image</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'vendor_detail' vendor_inventory.vendor.id %}">
+                            {{ vendor_inventory.vendor.name }}
+                        </a>
+                    </td>
+                    <td>{{ vendor_inventory.vendor.city }}, {{ vendor_inventory.vendor.building }}</td>
+                    <td>{{ vendor_inventory.vendor.profession }}</td>
+                    <td>{{ vendor_inventory.quantity }}</td>
+                    <td>{{ vendor_inventory.vendor.available_gold }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No known vendors currently sell this ingredient.</p>
+{% endif %}
+
+<a href="{% url 'all_ingredients' %}" class="btn btn-secondary mt-4">Back to All Ingredients</a>
+{% endblock %}

@@ -1,0 +1,12 @@
+# Media Directory
+
+This directory contains all media files for the Morrowind Alchemy Compendium project. It includes subdirectories for storing images related to ingredients, effects, and vendors.
+
+## Subdirectories:
+- `effect_icons/`: Stores icons for alchemy effects.
+- `ingredient_images/`: Stores images of ingredients.
+- `vendor_images/`: Stores images of vendors.
+
+## Notes:
+- These directories are required for the application to function correctly.
+- The actual media files are not tracked by version control to reduce repository size. Placeholder files (`.placeholder`) are used to retain the folder structure.

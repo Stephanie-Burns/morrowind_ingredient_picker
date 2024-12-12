@@ -1,0 +1,39 @@
+<style>
+    .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background: #333;
+        color: white;
+        padding: 10px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 1000; /* Ensures it stays above other content */
+    }
+
+    .navbar a {
+        color: white;
+        text-decoration: none;
+        margin: 0 10px;
+    }
+
+    .navbar a:hover {
+        text-decoration: underline;
+    }
+
+    .page-content {
+        margin-top: 60px; /* Prevents content from being hidden under the fixed navbar */
+    }
+</style>
+
+<nav class="navbar">
+    <div>
+        <a href="/"><i class="fa fa-home"></i> Home</a>
+        <a href="/effects/"><i class="fa fa-flask"></i> All Effects</a>
+        <a href="/ingredients/"><i class="fa fa-leaf"></i> All Ingredients</a>
+        <a href="/favorites/"><i class="fa fa-star"></i> Favorites</a>
+        <a href="/potions/select_effect/"><i class="fa fa-vial"></i> Make a Potion</a>
+    </div>
+</nav>

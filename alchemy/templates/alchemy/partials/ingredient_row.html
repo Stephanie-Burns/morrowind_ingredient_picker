@@ -1,0 +1,28 @@
+<tr id="ingredient-{{ ingredient.id }}">
+    <td>
+        {% if ingredient.image %}
+            <img src="{{ ingredient.image.url }}" alt="{{ ingredient.name }}" width="50" height="50" style="border-radius: 4px;" />
+        {% endif %}
+    </td>
+    <td>
+        <a href="{% url 'ingredient_detail' ingredient.id %}">
+            {{ ingredient.name }}
+        </a>
+    </td>
+    <td>{{ ingredient.weight }}</td>
+    <td>{{ ingredient.value }}</td>
+    <td>
+        <button
+            hx-get="{% url 'toggle_favorite_htmx' ingredient.id %}"
+            hx-target="#ingredient-{{ ingredient.id }}"
+            hx-swap="outerHTML"
+            class="btn btn-sm"
+        >
+            {% if ingredient.favorite %}
+                ❤️
+            {% else %}
+                🤍
+            {% endif %}
+        </button>
+    </td>
+</tr>
