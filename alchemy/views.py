@@ -120,76 +120,40 @@ def search_effects(request):
 
 # === Potion Views ===
 
-def select_effects(request):
-    """Allow users to select effects for potion making."""
-    effects = Effect.objects.all().order_by('name')
-    return render(request, 'alchemy/select_effects.html', {'effects': effects})
+def potion_start(request):
+    """Displays the starting interface for potion-making."""
+    effects = Effect.objects.order_by('name')
+    ingredients = Ingredient.objects.order_by('name')
+    return render(request, 'alchemy/potion_start.html', {
+        'effects': effects,
+        'ingredients': ingredients,
+    })
 
+def potion_add_ingredient(request):
+    """Adds an ingredient to the potion dynamically."""
+    ingredient_id = request.GET.get('ingredient_id')
+    ingredient = get_object_or_404(Ingredient, id=ingredient_id)
+    return render(request, 'alchemy/partials/ingredient_card.html', {'ingredient': ingredient})
 
-def select_ingredients(request):
-    """Allow users to select ingredients for potion making."""
-    if request.method == 'POST':
-        effect_ids = request.POST.getlist('effects')
-        effects = Effect.objects.filter(id__in=effect_ids)
+def potion_add_effect(request):
+    """Filters ingredients by a selected effect."""
+    effect_id = request.GET.get('effect_id')
+    effect = get_object_or_404(Effect, id=effect_id)
+    ingredients = Ingredient.objects.filter(
+        ingredienteffects__effect=effect
+    ).distinct().order_by('name')
+    return render(request, 'alchemy/partials/ingredient_list.html', {
+        'effect': effect,
+        'ingredients': ingredients,
+    })
 
-        grouped_ingredients = {}
-        seen_ingredients = set()
+def potion_review(request):
+    """Show the selected ingredients and their combined effects."""
+    return render(request, 'alchemy/potions/review.html')
 
-        for effect in effects:
-            ingredients = Ingredient.objects.filter(
-                ingredienteffects__effect=effect
-            ).distinct()
-
-            grouped_ingredients[effect] = [
-                {"ingredient": ingredient, "disabled": ingredient.id in seen_ingredients}
-                for ingredient in ingredients
-            ]
-            seen_ingredients.update(ingredient.id for ingredient in ingredients)
-
-        return render(request, 'alchemy/select_ingredients.html', {
-            'effects': effects,
-            'grouped_ingredients': grouped_ingredients,
-        })
-
-
-def review_potion(request):
-    """Review the effects of the selected potion ingredients."""
-    if request.method == 'POST':
-        ingredient_ids = request.POST.getlist('ingredients')
-        if len(ingredient_ids) < 2 or len(ingredient_ids) > 4:
-            return render(request, 'alchemy/select_ingredients.html', {
-                'error': 'You must select between 2 and 4 ingredients.'
-            })
-
-        ingredients = Ingredient.objects.filter(id__in=ingredient_ids)
-        common_effect_ids = set(ingredients[0].ingredienteffects.values_list('effect_id', flat=True))
-
-        for ingredient in ingredients[1:]:
-            ingredient_effect_ids = set(ingredient.ingredienteffects.values_list('effect_id', flat=True))
-            common_effect_ids.intersection_update(ingredient_effect_ids)
-
-        common_effects = Effect.objects.filter(id__in=common_effect_ids)
-        return render(request, 'alchemy/review_potion.html', {
-            'ingredients': ingredients,
-            'effects': common_effects,
-        })
-
-
-def save_potion(request):
-    """Save a created potion."""
-    if request.method == 'POST':
-        name = request.POST.get('name')
-        ingredient_ids = request.POST.get('ingredients').split(',')
-        effect_ids = request.POST.get('effects').split(',')
-
-        ingredients = Ingredient.objects.filter(id__in=ingredient_ids)
-        effects = Effect.objects.filter(id__in=effect_ids)
-
-        potion = Potion.objects.create(name=name)
-        potion.ingredients.set(ingredients)
-        potion.effects.set(effects)
-
-        return redirect('view_potions')
+def potion_save(request):
+    """Save the potion to the database."""
+    return render(request, 'alchemy/potions/save.html')
 
 
 # === Vendor Views ===

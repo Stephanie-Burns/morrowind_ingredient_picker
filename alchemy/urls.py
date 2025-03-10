@@ -22,10 +22,11 @@ urlpatterns = [
     path('favorites/', views.favorite_ingredients, name='favorite_ingredients'),  # Favorites page
 
     # === Potions ===
-    path('potions/select_effect/', views.select_effects, name='select_effect'),  # Select effects for potions
-    path('potions/select_ingredients/', views.select_ingredients, name='select_ingredients'),  # Select ingredients for potions
-    path('potions/review/', views.review_potion, name='review_potion'),  # Review potion
-    path('potions/save/', views.save_potion, name='save_potion'),  # Save potion
+    path('potions/start/', views.potion_start, name='potion_start'),
+    path('potions/add_ingredient/', views.potion_add_ingredient, name='potion_add_ingredient'),
+    path('potions/add_effect/', views.potion_add_effect, name='potion_add_effect'),
+    path('potions/review/', views.potion_review, name='potion_review'),
+    path('potions/save/', views.potion_save, name='potion_save'),
 
     # === Vendors ===
     path('vendor/<int:vendor_id>/', views.vendor_detail, name='vendor_detail'),  # Vendor detail

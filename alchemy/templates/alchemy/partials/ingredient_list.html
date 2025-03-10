@@ -1,0 +1,8 @@
+<div>
+    <h3>Ingredients for Effect: {{ effect.name }}</h3>
+    {% for ingredient in ingredients %}
+        <p>{{ ingredient.name }}</p>
+    {% empty %}
+        <p>No ingredients found for this effect.</p>
+    {% endfor %}
+</div>

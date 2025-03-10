@@ -1,0 +1,6 @@
+<div class="ingredient-card">
+    <p>{{ ingredient.name }}</p>
+    {% if ingredient.image %}
+        <img src="{{ ingredient.image.url }}" alt="{{ ingredient.name }}" width="50" />
+    {% endif %}
+</div>

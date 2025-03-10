@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Start Potion Making{% endblock %}
+
+{% block content %}
+<h1>Make a Potion</h1>
+
+<!-- Search and Select Effects -->
+<h2>Select an Effect</h2>
+<div>
+    {% for effect in effects %}
+        <button
+            hx-get="{% url 'potion_add_effect' %}?effect_id={{ effect.id }}"
+            hx-target="#ingredient-list"
+            hx-swap="innerHTML"
+        >
+            {{ effect.name }}
+        </button>
+    {% endfor %}
+</div>
+
+<!-- Search and Select Ingredients -->
+<h2>Select Ingredients</h2>
+<div>
+    {% for ingredient in ingredients %}
+        <button
+            hx-get="{% url 'potion_add_ingredient' %}?ingredient_id={{ ingredient.id }}"
+            hx-target="#selected-ingredients"
+            hx-swap="beforeend"
+        >
+            {{ ingredient.name }}
+        </button>
+    {% endfor %}
+</div>
+
+<!-- Display Selected Ingredients -->
+<h2>Selected Ingredients</h2>
+<div id="selected-ingredients">
+    <p>No ingredients selected yet.</p>
+</div>
+
+<!-- Display Filtered Ingredients -->
+<h2>Filtered Ingredients</h2>
+<div id="ingredient-list">
+    <p>Select an effect to see matching ingredients.</p>
+</div>
+{% endblock %}
